@@ -91,9 +91,9 @@ portfolio = []
 
 for i in range(int(number_of_stocks)):
 
-    st.subheader(f"Stock {i + 1}")
+    st.markdown(f"### Stock {i + 1}")
 
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns([1.2, 1, 1.2, 1.2])
 
     with col1:
         ticker = st.text_input(
@@ -113,21 +113,22 @@ for i in range(int(number_of_stocks)):
 
     with col3:
         average_price = st.number_input(
-            "Average purchase price",
+            "Average purchase price ($)",
             min_value=0.0,
             value=0.0,
             step=1.0,
+            format="%.2f",
             key=f"average_{i}"
         )
-
     with col4:
         current_price = st.number_input(
-            "Current share price",
-            min_value=0.0,
-            value=0.0,
-            step=1.0,
-            key=f"current_{i}"
-        )
+        "Current share price ($)",
+        min_value=0.0,
+        value=0.0,
+        step=1.0,
+        format="%.2f",
+        key=f"current_{i}"
+    )
 
     cost_basis = shares * average_price
     current_value = shares * current_price
@@ -142,7 +143,7 @@ for i in range(int(number_of_stocks)):
             "Current Value": current_value
         }
     )
-
+st.divider()
 
 # --------------------------------------------------
 # INVESTMENT GOALS
@@ -189,19 +190,19 @@ with col2:
 # ANNUAL RETURN
 # --------------------------------------------------
 
-st.header("3. Growth Assumption")
+st.header("3. Expected Growth")
 
-expected_annual_return = st.number_input(
-    "Expected annual return (%)",
+expected_annual_return = st.slider(
+    "Hypothetical annual return",
     min_value=0.0,
-    max_value=30.0,
+    max_value=20.0,
     value=7.0,
     step=0.5,
-    help="Enter 7 for a 7% annual return."
+    format="%.1f%%"
 )
 
 st.caption(
-    f"Using a hypothetical annual return of {expected_annual_return:.1f}%."
+    "Adjust the return to compare different long-term growth scenarios."
 )
 
 
@@ -212,7 +213,7 @@ st.caption(
 st.divider()
 
 analyze = st.button(
-    "Analyze My Portfolio",
+    "Generate My Portfolio Analysis",
     type="primary",
     use_container_width=True
 )
