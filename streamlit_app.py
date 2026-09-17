@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 
 # --------------------------------------------------
@@ -337,12 +338,27 @@ if analyze:
 
         st.subheader("Portfolio Allocation")
 
-        allocation_chart = (
-            df[["Ticker", "Portfolio Weight %"]]
-            .set_index("Ticker")
+        allocation_fig = px.pie(
+            df,
+            names="Ticker",
+            values="Current Value",
+            hole=0.45
         )
 
-        st.bar_chart(allocation_chart)
+        allocation_fig.update_traces(
+            textposition="inside",
+            textinfo="label+percent"
+        )
+
+        allocation_fig.update_layout(
+            showlegend=True,
+            margin=dict(t=20, b=20, l=20, r=20)
+        )
+
+        st.plotly_chart(
+            allocation_fig,
+            use_container_width=True
+        )
 
 
         # ------------------------------------------
