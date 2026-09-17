@@ -425,7 +425,7 @@ if analyze:
         # COMPOUND GROWTH OPPORTUNITIES
         # ------------------------------------------
 
-        st.header("Compound Growth Opportunities")
+        st.subheader("Compound Growth Opportunities")
 
         scenarios = [
             current_monthly_contribution,
@@ -458,24 +458,46 @@ if analyze:
         scenario_df = pd.DataFrame(
             {
                 "Scenario": scenario_names,
-                "Projected Value": scenario_values
+                "Monthly Contribution": scenarios,
+            "Projected Value": scenario_values
             }
         )
+
+        scenario_df["Additional Value"] = (
+            scenario_df["Projected Value"] - scenario_values[0]
+        )
+
 
         st.dataframe(
             scenario_df.style.format(
                 {
-                    "Projected Value": "${:,.2f}"
+                    "Monthly Contribution": "${:,.2f}",
+                    "Projected Value": "${:,.2f}",
+                    "Additional Value": "${:,.2f}"
                 }
             ),
             use_container_width=True,
             hide_index=True
         )
 
-        st.bar_chart(
-            scenario_df.set_index("Scenario")
+
+        growth_fig = px.line(
+            scenario_df,
+            x="Monthly Contribution",
+            y="Projected Value",
+            markers=True
         )
 
+        growth_fig.update_layout(
+            xaxis_title="Monthly Contribution ($)",
+            yaxis_title="Projected Portfolio Value ($)",
+            margin=dict(t=20, b=20, l=20, r=20)
+        )
+
+        st.plotly_chart(
+            growth_fig,
+            use_container_width=True
+        )
 
         # ------------------------------------------
         # CONTRIBUTIONS VS GROWTH
@@ -500,6 +522,19 @@ if analyze:
             - total_contributed_capital
         )
 
+        growth_breakdown_df = pd.DataFrame(
+            {
+                "Type": [
+                    "Money Contributed",
+                    "Modeled Investment Growth"
+                ],
+                "Amount": [
+                    total_contributed_capital,
+                    modeled_growth
+                ]
+            }
+        )
+
         col1, col2, col3 = st.columns(3)
 
         col1.metric(
@@ -517,6 +552,28 @@ if analyze:
             f"${current_goal_projection:,.0f}"
         )
 
+        growth_breakdown_fig = px.pie(
+            growth_breakdown_df,
+            names="Type",
+            values="Amount",
+            hole=0.5
+        )
+
+        growth_breakdown_fig.update_traces(
+            textposition="inside",
+            textinfo="label+percent"
+        )
+
+        growth_breakdown_fig.update_layout(
+            showlegend=True,
+            margin=dict(t=20, b=20, l=20, r=20)
+        )
+
+        st.plotly_chart(
+            growth_breakdown_fig,
+            use_container_width=True
+        )
+        
 
         # ------------------------------------------
         # LONG TERM PROJECTIONS
