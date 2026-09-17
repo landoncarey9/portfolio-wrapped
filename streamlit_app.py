@@ -580,12 +580,11 @@ if analyze:
         # ------------------------------------------
 
         st.header("Long-Term Compound Growth")
+         chart_years = list(range(0, 31))
 
-        projection_years = [5, 10, 20, 30]
+        chart_values = []
 
-        projection_values = []
-
-        for years in projection_years:
+        for years in chart_years:
 
             value = future_value(
                 total_portfolio_value,
@@ -594,24 +593,62 @@ if analyze:
                 years
             )
 
-            projection_values.append(value)
+            chart_values.append(value)
 
 
-        projection_df = pd.DataFrame(
+        chart_df = pd.DataFrame(
             {
-                "Years": projection_years,
-                "Projected Portfolio": projection_values
+                "Years": chart_years,
+                "Projected Portfolio": chart_values
             }
         )
 
-        st.line_chart(
-            projection_df,
+
+        long_term_fig = px.line(
+            chart_df,
             x="Years",
             y="Projected Portfolio"
         )
 
+        long_term_fig.update_layout(
+            xaxis_title="Years",
+            yaxis_title="Projected Portfolio Value ($)",
+            margin=dict(t=20, b=20, l=20, r=20)
+        )
+
+        st.plotly_chart(
+            long_term_fig,
+            use_container_width=True
+        )
+
+
+        # Display important milestones
+
+        milestone_years = [5, 10, 20, 30]
+
+        milestone_values = []
+
+        for years in milestone_years:
+
+            value = future_value(
+                total_portfolio_value,
+                current_monthly_contribution,
+                expected_annual_return,
+                years
+            )
+
+            milestone_values.append(value)
+
+
+        milestone_df = pd.DataFrame(
+            {
+                "Years": milestone_years,
+                "Projected Portfolio": milestone_values
+            }
+        )
+
         st.dataframe(
-            projection_df.style.format(
+            milestone_df.style.format(
                 {
                     "Projected Portfolio": "${:,.2f}"
                 }
@@ -634,16 +671,22 @@ if analyze:
 
         largest = sorted_df.iloc[0]
 
-        top_three_weight = (
+        top_holdings_count = min(3, len(sorted_df))
+
+        top_holdings_weight = (
             sorted_df
-            .head(3)["Portfolio Weight %"]
+            .head(top_holdings_count)["Portfolio Weight %"]
             .sum()
         )
 
+        if top_holdings_count == 1:
+            holdings_label = "Top holding"
+        else:
+            holdings_label = f"Top {top_holdings_count} holdings"
 
         st.write(
-            f"**Largest holding:** {largest['Ticker']} "
-            f"({largest['Portfolio Weight %']:.1f}% of your portfolio)"
+            f"**{holdings_label}:** "
+            f"{top_holdings_weight:.1f}% of your portfolio"
         )
 
         st.write(
