@@ -693,6 +693,42 @@ if analyze:
             f"{largest['Portfolio Weight %']:.1f}% of your portfolio"
         )
 
+                performance_df = df[
+            (df["Shares"] > 0) & (df["Cost Basis"] > 0)
+        ].sort_values("Return %", ascending=False)
+
+        if len(performance_df) >= 2:
+            best = performance_df.iloc[0]
+            worst = performance_df.iloc[-1]
+
+            st.write(
+                f"**Best-performing holding:** {best['Ticker']} — "
+                f"{best['Return %']:+.2f}%"
+            )
+
+            st.write(
+                f"**Worst-performing holding:** {worst['Ticker']} — "
+                f"{worst['Return %']:+.2f}%"
+            )
+
+        elif len(performance_df) == 1:
+            holding = performance_df.iloc[0]
+
+            st.write(
+                f"**Holding return:** {holding['Ticker']} — "
+                f"{holding['Return %']:+.2f}%"
+            )
+
+        else:
+            st.info(
+                "Enter an average purchase price to calculate holding returns."
+            )
+
+        st.caption(
+            "Holding returns compare the purchase and current prices you "
+            "entered. They exclude dividends, fees, and holding-period differences."
+        )
+        
         st.write(
             f"**Individual stocks:** {len(df)}"
         )
