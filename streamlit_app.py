@@ -772,3 +772,25 @@ if analyze:
             f"{expected_annual_return:.1f}% annual return and regular "
             f"monthly contributions. Actual investment returns will vary."
         )
+
+st.divider()
+st.header("Stock Valuation Snapshot")
+st.caption("Explore a stock using figures you enter manually.")
+
+with st.form("stock_price_snapshot"):
+    research_ticker = st.text_input(
+        "Stock ticker",
+        placeholder="MSFT",
+        key="research_ticker"
+    ).strip().upper()
+
+    price_col, low_col, high_col = st.columns(3)
+
+    research_price = price_col.number_input(
+        "Current stock price ($)",
+        min_value=0.0,
+        value=0.0,
+        step=0.01,
+        format="%.2f",
+        key="research_price"
+    )
