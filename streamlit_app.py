@@ -688,10 +688,9 @@ if analyze:
             f"**{holdings_label}:** "
             f"{top_holdings_weight:.1f}% of your portfolio"
         )
-
         st.write(
-            f"**Top three holdings:** "
-            f"{top_three_weight:.1f}% of your portfolio"
+            f"**Largest holding:** {largest['Ticker']} — "
+            f"{largest['Portfolio Weight %']:.1f}% of your portfolio"
         )
 
         st.write(
