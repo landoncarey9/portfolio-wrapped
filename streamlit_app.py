@@ -794,3 +794,67 @@ with st.form("stock_price_snapshot"):
         format="%.2f",
         key="research_price"
     )
+
+    research_low = low_col.number_input(
+        "52-week low ($)",
+        min_value=0.0,
+        value=0.0,
+        step=0.01,
+        format="%.2f",
+        key="research_low"
+    )
+
+    research_high = high_col.number_input(
+        "52-week high ($)",
+        min_value=0.0,
+        value=0.0,
+        step=0.01,
+        format="%.2f",
+        key="research_high"
+    )
+
+    research_submitted = st.form_submit_button("Show Price Snapshot")
+
+if research_submitted:
+    if not research_ticker:
+        st.warning("Enter a stock ticker.")
+
+    elif min(research_price, research_low, research_high) <= 0:
+        st.warning("Enter a positive value for all three prices.")
+
+    elif research_high <= research_low:
+        st.warning("The 52-week high must be greater than the low.")
+
+    else:
+        range_position = (
+            (research_price - research_low)
+            / (research_high - research_low)
+            * 100
+        )
+
+        change_from_low = (research_price / research_low - 1) * 100
+        change_from_high = (research_price / research_high - 1) * 100
+
+        st.subheader(f"{research_ticker}: Price Snapshot")
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric("Position in 52-week range", f"{range_position:.1f}%")
+        col2.metric("Change from 52-week low", f"{change_from_low:+.1f}%")
+        col3.metric("Change from 52-week high", f"{change_from_high:+.1f}%")
+
+        st.caption(
+            "Range position: 0% equals the entered low; "
+            "100% equals the entered high."
+        )
+
+        if research_price < research_low or research_price > research_high:
+            st.warning(
+                "The current price is outside the entered range. "
+                "Check that the prices use the same date, currency, "
+                "and stock-split basis."
+            )
+
+        st.info(
+            "This snapshot describes price history. It does not estimate "
+            "fair value or predict whether the price will rise."
+        )
