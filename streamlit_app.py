@@ -580,7 +580,7 @@ if analyze:
         # ------------------------------------------
 
         st.header("Long-Term Compound Growth")
-         chart_years = list(range(0, 31))
+        chart_years = list(range(0, 31))
 
         chart_values = []
 
