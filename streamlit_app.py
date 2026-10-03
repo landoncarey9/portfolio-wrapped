@@ -693,7 +693,7 @@ if analyze:
             f"{largest['Portfolio Weight %']:.1f}% of your portfolio"
         )
 
-                performance_df = df[
+        performance_df = df[
             (df["Shares"] > 0) & (df["Cost Basis"] > 0)
         ].sort_values("Return %", ascending=False)
 
