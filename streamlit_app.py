@@ -124,70 +124,80 @@ def required_monthly_contribution(
 
 st.header("1. Your Portfolio")
 
-number_of_stocks = st.number_input(
-    "How many individual stocks do you own?",
-    min_value=1,
-    max_value=20,
-    value=3,
-    step=1
-)
-
 portfolio = []
 
-for i in range(int(number_of_stocks)):
-
-    st.markdown(f"### Stock {i + 1}")
-
-    col1, col2, col3, col4 = st.columns([1.2, 1, 1.2, 1.2])
-
-    with col1:
-        ticker = st.text_input(
-            "Ticker",
-            key=f"ticker_{i}",
-            placeholder="MSFT"
-        ).upper()
-
-    with col2:
-        shares = st.number_input(
-            "Shares",
-            min_value=0.0,
-            value=0.0,
-            step=0.1,
-            key=f"shares_{i}"
-        )
-
-    with col3:
-        average_price = st.number_input(
-            "Average purchase price ($)",
-            min_value=0.0,
-            value=0.0,
-            step=1.0,
-            format="%.2f",
-            key=f"average_{i}"
-        )
-    with col4:
-        current_price = st.number_input(
-        "Current share price ($)",
-        min_value=0.0,
-        value=0.0,
-        step=1.0,
-        format="%.2f",
-        key=f"current_{i}"
+with st.expander("Add or edit your holdings", expanded=True):
+    st.caption(
+        "Enter prices in U.S. dollars. "
+        "Current prices are entered manually."
     )
 
-    cost_basis = shares * average_price
-    current_value = shares * current_price
-
-    portfolio.append(
-        {
-            "Ticker": ticker if ticker else f"Stock {i + 1}",
-            "Shares": shares,
-            "Average Price": average_price,
-            "Current Price": current_price,
-            "Cost Basis": cost_basis,
-            "Current Value": current_value
-        }
+    number_of_stocks = st.number_input(
+        "How many individual stocks do you own?",
+        min_value=1,
+        max_value=20,
+        value=3,
+        step=1
     )
+
+    for i in range(int(number_of_stocks)):
+        with st.container(border=True):
+            st.markdown(f"**Holding {i + 1}**")
+
+            col1, col2, col3, col4 = st.columns(
+                [1.2, 1, 1.2, 1.2]
+            )
+
+            with col1:
+                ticker = st.text_input(
+                    "Ticker",
+                    key=f"ticker_{i}",
+                    placeholder="MSFT"
+                ).upper()
+
+            with col2:
+                shares = st.number_input(
+                    "Shares",
+                    min_value=0.0,
+                    value=0.0,
+                    step=0.1,
+                    key=f"shares_{i}"
+                )
+
+            with col3:
+                average_price = st.number_input(
+                    "Average purchase price ($)",
+                    min_value=0.0,
+                    value=0.0,
+                    step=1.0,
+                    format="%.2f",
+                    key=f"average_{i}"
+                )
+
+            with col4:
+                current_price = st.number_input(
+                    "Current share price ($)",
+                    min_value=0.0,
+                    value=0.0,
+                    step=1.0,
+                    format="%.2f",
+                    key=f"current_{i}"
+                )
+
+        cost_basis = shares * average_price
+        current_value = shares * current_price
+
+        portfolio.append(
+            {
+                "Ticker": ticker if ticker else f"Stock {i + 1}",
+                "Shares": shares,
+                "Average Price": average_price,
+                "Current Price": current_price,
+                "Cost Basis": cost_basis,
+                "Current Value": current_value
+            }
+        )
+
 st.divider()
 
 # --------------------------------------------------
