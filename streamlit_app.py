@@ -13,14 +13,58 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📈 Portfolio Wrapped")
-st.write(
-    "Understand your individual-stock portfolio, explore compound growth, "
-    "and see what your investing habits could become over time."
+st.html(
+    """
+    <style>
+        .pw-hero {
+            background: #0F172A;
+            border-top: 4px solid #14B8A6;
+            border-radius: 16px;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .pw-hero .pw-eyebrow {
+            color: #5EEAD4;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            margin: 0 0 0.75rem;
+        }
+
+        .pw-hero .pw-title {
+            color: #FFFFFF;
+            font-size: clamp(2rem, 5vw, 3.25rem);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.15;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pw-hero .pw-description {
+            color: #CBD5E1;
+            font-size: 1rem;
+            line-height: 1.65;
+            max-width: 44rem;
+            margin: 1rem 0 0;
+        }
+    </style>
+
+    <section class="pw-hero" aria-label="About Portfolio Wrapped">
+        <p class="pw-eyebrow">INVESTING, EXPLAINED</p>
+        <h1 class="pw-title">Portfolio Wrapped</h1>
+        <p class="pw-description">
+            Understand what you own. Explore how time, contributions,
+            and hypothetical returns shape your portfolio.
+        </p>
+    </section>
+    """
 )
 
 st.caption(
-    "Educational tool only. Projections are hypothetical and are not guarantees of future returns."
+    "For investing education. Projections are hypothetical, "
+    "and actual returns may differ."
 )
 
 
