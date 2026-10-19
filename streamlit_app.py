@@ -204,11 +204,13 @@ st.divider()
 # INVESTMENT GOALS
 # --------------------------------------------------
 
-st.header("2. Your Investing Goals")
+with st.sidebar:
+    st.caption("PORTFOLIO WRAPPED")
+    st.header("Your plan")
+    st.caption("All dollar amounts are in U.S. dollars.")
 
-col1, col2 = st.columns(2)
+    st.subheader("Time horizon")
 
-with col1:
     current_age = st.number_input(
         "Current age",
         min_value=18,
@@ -216,20 +218,22 @@ with col1:
         value=22
     )
 
+    target_age = st.number_input(
+        "Target age",
+        min_value=int(current_age) + 1,
+        max_value=110,
+        value=max(int(current_age) + 1, 50)
+    )
+
+    st.divider()
+    st.subheader("Goal & contributions")
+
     target_portfolio_value = st.number_input(
         "Target portfolio value",
         min_value=0.0,
         value=1000000.0,
         step=10000.0,
         format="%.2f"
-    )
-
-with col2:
-    target_age = st.number_input(
-        "Target age",
-        min_value=int(current_age) + 1,
-        max_value=110,
-        value=max(int(current_age) + 1, 50)
     )
 
     current_monthly_contribution = st.number_input(
@@ -240,37 +244,31 @@ with col2:
         format="%.2f"
     )
 
+    st.divider()
+    st.subheader("Growth assumption")
 
-# --------------------------------------------------
-# ANNUAL RETURN
-# --------------------------------------------------
+    expected_annual_return = st.slider(
+        "Hypothetical annual return",
+        min_value=0.0,
+        max_value=20.0,
+        value=7.0,
+        step=0.5,
+        format="%.1f%%"
+    )
 
-st.header("3. Expected Growth")
-
-expected_annual_return = st.slider(
-    "Hypothetical annual return",
-    min_value=0.0,
-    max_value=20.0,
-    value=7.0,
-    step=0.5,
-    format="%.1f%%"
-)
+    st.caption(
+        "Compare hypothetical growth scenarios. "
+        "Actual investment returns will vary."
+    )
 
 st.caption(
-    "Adjust the return to compare different long-term growth scenarios."
+    "Adjust your goals and growth assumptions in the sidebar, "
+    "then generate your analysis."
 )
-
-
-# --------------------------------------------------
-# ANALYZE BUTTON
-# --------------------------------------------------
-
-st.divider()
 
 analyze = st.button(
     "Generate My Portfolio Analysis",
-    type="primary",
-    use_container_width=True
+    type="primary"
 )
 
 
