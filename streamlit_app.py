@@ -224,10 +224,10 @@ analyze = st.button(
 # RESULTS
 # --------------------------------------------------
 
-    if analyze or st.session_state.get("show_analysis", False):
-        st.session_state["show_analysis"] = True
+if analyze or st.session_state.get("show_analysis", False):
+    st.session_state["show_analysis"] = True
 
-        df = pd.DataFrame(portfolio)
+    df = pd.DataFrame(portfolio)
 
     total_portfolio_value = df["Current Value"].sum()
     total_cost_basis = df["Cost Basis"].sum()
