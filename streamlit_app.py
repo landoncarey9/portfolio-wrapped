@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
+from compound_village import render_compound_village
 
 # --------------------------------------------------
 # PAGE SETUP
@@ -66,6 +66,8 @@ st.caption(
     "For investing education. Projections are hypothetical, "
     "and actual returns may differ."
 )
+
+render_compound_village()
 
 
 # --------------------------------------------------
